@@ -1,8 +1,8 @@
 Building configuration...
 
-Current configuration : 4505 bytes
+Current configuration : 4982 bytes
 !
-! Last configuration change at 10:12:35 UTC Tue Feb 23 2021 by NETCONF
+! Last configuration change at 10:53:25 UTC Tue Feb 23 2021 by developer
 !
 version 16.9
 service timestamps debug datetime msec
@@ -16,6 +16,22 @@ hostname csr1000v-1
 boot-start-marker
 boot-end-marker
 !
+!
+vrf definition blue
+ description Blue VRF
+ rd 1:410
+!
+vrf definition finlaypod
+ description finlaypod VRF
+ rd 1:17
+!
+vrf definition green
+ description Green VRF
+ rd 1:420
+!
+vrf definition red
+ description Red VRF
+ rd 1:400
 !
 no logging console
 enable secret 5 $1$20ue$uC.uSGo6nvfWs63EjjzRP.
@@ -139,9 +155,25 @@ interface Loopback10
  description Pod Number 10
  ip address 10.111.10.1 255.255.255.255
 !
-interface Loopback117
- description Pod Number 17
- ip address 10.111.17.2 255.255.255.255
+interface Loopback1117
+ description Pod Number 1117
+ vrf forwarding red
+ no ip address
+!
+interface Loopback1217
+ description Pod Number 1217
+ vrf forwarding blue
+ no ip address
+!
+interface Loopback1317
+ description Pod Number 1317
+ vrf forwarding green
+ no ip address
+!
+interface Loopback1417
+ description Pod Number 1417
+ vrf forwarding finlaypod
+ no ip address
 !
 interface GigabitEthernet1
  description MANAGEMENT INTERFACE - DON'T TOUCH ME
@@ -207,7 +239,6 @@ ntp server 10.11.10.65
 ntp server 10.12.10.65
 ntp server 10.13.10.65
 ntp server 10.14.10.65
-ntp server 10.111.17.66
 !
 !
 !
